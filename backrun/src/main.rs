@@ -72,7 +72,7 @@ struct Args {
 
     /// Path to keypair file used to sign and pay for transactions
     #[arg(long, env)]
-    payer_keypair: PathBuf,
+    payer_keypair: String,
 
     /// Path to keypair file used to authenticate with the Jito Block Engine
     /// See: https://jito-labs.gitbook.io/mev/searcher-resources/getting-started#block-engine-api-key
@@ -611,7 +611,7 @@ fn main() -> Result<()> {
         .init();
     let args: Args = Args::parse();
 
-    let payer_keypair = Arc::new(read_keypair_file(&args.payer_keypair).expect("parse kp file"));
+    let payer_keypair = Arc::new(Keypair::from_base58_string(&args.payer_keypair));
     let auth_keypair = args
         .auth_keypair
         .as_ref()
